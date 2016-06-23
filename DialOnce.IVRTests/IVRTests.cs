@@ -9,7 +9,7 @@ namespace DialOnce.Tests
     {
 
         [TestMethod()]
-        public void GetTokenWithApplication()
+        public void GetTokenAndLogWithApplication()
         {
             string called  = "+33643487995";
             string caller = "+33643487995";
@@ -22,6 +22,23 @@ namespace DialOnce.Tests
             LogType lt = new LogType(LogType.CALL_START);
             bool result = ivrFlow.Log(lt);
 
+            Assert.IsTrue(result);
+
+        }
+
+        [TestMethod()]
+        public void GetTokenAndisMobileWithApplication()
+        {
+            string called = "+33643487995";
+            string caller = "+33643487995";
+
+            Application app = new Application("qpvao53b1x10z7u3906wvgzmvexuxwxj", "56g5jvhlciv9e0l4izccjqkf54okh21jbn4d4yj7");
+            IVR ivrFlow = new IVR(app, caller, called);
+
+            ivrFlow.Init();
+            ValidateToken(app.Token);
+            
+            bool result = ivrFlow.isMobile("fr");
             Assert.IsTrue(result);
 
         }

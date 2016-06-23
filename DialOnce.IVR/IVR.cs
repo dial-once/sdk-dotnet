@@ -53,6 +53,7 @@ namespace DialOnce
             if (this.app.Token == null || String.IsNullOrEmpty(this.app.Token.Token))
             {
                 this.app.Token = GetTokenDescriptor(app.ClientId, app.ClientSecret);
+                this.httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(this.app.Token.Scheme, this.app.Token.Token);
             }
         }
 
@@ -106,6 +107,30 @@ namespace DialOnce
             string result = response.Content.ReadAsStringAsync().Result;
             dynamic resultObj = JsonConvert.DeserializeObject(result);
             return resultObj.success;
+        }
+
+        public bool isMobile(string cultureISO)
+        {
+            
+            
+
+            UriBuilder builder = new UriBuilder(Properties.Resources.BASE_URL);
+            builder.Path = Properties.Resources.IS_MOBILE_ENDPOINT;
+
+            string url = builder.Uri.ToString() + @"?number=" + this.caller;
+
+
+            if (!String.IsNullOrEmpty(cultureISO))
+            {
+              url += @"&cultureISO=" + cultureISO;
+            }
+            
+
+            HttpResponseMessage response = this.httpClient.GetAsync(url).Result;
+            response.EnsureSuccessStatusCode();
+            string result = response.Content.ReadAsStringAsync().Result;
+            dynamic resultObj = JsonConvert.DeserializeObject(result);
+            return resultObj.mobile;
         }
     }
 
