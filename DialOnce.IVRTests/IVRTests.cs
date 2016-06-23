@@ -7,14 +7,15 @@ namespace DialOnce.Tests
     [TestClass()]
     public class IVRTests
     {
+        private static string called = "+33643487995";
+        private static string caller = "+33643487995";
+        private static string clientId = "qpvao53b1x10z7u3906wvgzmvexuxwxj";
+        private static string clientSecret = "56g5jvhlciv9e0l4izccjqkf54okh21jbn4d4yj7";
 
         [TestMethod()]
         public void GetTokenAndLogWithApplication()
         {
-            string called  = "+33643487995";
-            string caller = "+33643487995";
-
-            Application app = new Application("qpvao53b1x10z7u3906wvgzmvexuxwxj", "56g5jvhlciv9e0l4izccjqkf54okh21jbn4d4yj7");
+            Application app = new Application(clientId, clientSecret);
             IVR ivrFlow = new IVR(app, caller, called);
 
             ivrFlow.Init();
@@ -23,22 +24,22 @@ namespace DialOnce.Tests
             bool result = ivrFlow.Log(lt);
 
             Assert.IsTrue(result);
-
         }
 
         [TestMethod()]
         public void GetTokenAndisMobileWithApplication()
         {
-            string called = "+33643487995";
-            string caller = "+33643487995";
-
-            Application app = new Application("qpvao53b1x10z7u3906wvgzmvexuxwxj", "56g5jvhlciv9e0l4izccjqkf54okh21jbn4d4yj7");
+            Application app = new Application(clientId, clientSecret);
             IVR ivrFlow = new IVR(app, caller, called);
 
             ivrFlow.Init();
             ValidateToken(app.Token);
             
-            bool result = ivrFlow.isMobile("fr");
+            bool result = ivrFlow.IsMobile("fr");
+            Assert.IsTrue(result);
+
+            //
+            bool resultNoCulture = ivrFlow.IsMobile();
             Assert.IsTrue(result);
 
         }
@@ -46,16 +47,13 @@ namespace DialOnce.Tests
         [TestMethod()]
         public void GetTokenAndisEligibleWithApplication()
         {
-            string called = "+33643487995";
-            string caller = "+33643487995";
-
-            Application app = new Application("qpvao53b1x10z7u3906wvgzmvexuxwxj", "56g5jvhlciv9e0l4izccjqkf54okh21jbn4d4yj7");
+            Application app = new Application(clientId, clientSecret);
             IVR ivrFlow = new IVR(app, caller, called);
 
             ivrFlow.Init();
             ValidateToken(app.Token);
 
-            bool result = ivrFlow.isEligible();
+            bool result = ivrFlow.IsEligible();
             Assert.IsTrue(result);
 
         }
@@ -63,10 +61,7 @@ namespace DialOnce.Tests
         [TestMethod()]
         public void GetTokenAndServiceRequestWithApplication()
         {
-            string called = "+33643487995";
-            string caller = "+33643487995";
-
-            Application app = new Application("qpvao53b1x10z7u3906wvgzmvexuxwxj", "56g5jvhlciv9e0l4izccjqkf54okh21jbn4d4yj7");
+            Application app = new Application(clientId, clientSecret);
             IVR ivrFlow = new IVR(app, caller, called);
 
             ivrFlow.Init();
@@ -74,13 +69,11 @@ namespace DialOnce.Tests
 
             bool result = ivrFlow.ServiceRequest();
             Assert.IsTrue(result);
-
         }
 
         [TestMethod()]
         public void GetTokenWithInvalidArguments()
         {
-
             try
             {
                 Application app = new Application(null, null);
@@ -100,7 +93,6 @@ namespace DialOnce.Tests
         [TestMethod()]
         public void GetTokenWithInvalidClientSecret()
         {
-
             try
             {
                 Application app = new Application("test", null);

@@ -11,26 +11,29 @@ namespace DialOnce
 {
     public class IVR
     {
-        public struct LogType  {
-           public static readonly string CALL_START = "call-start";
-           public static readonly string CALL_END = "call-end";
-           public static readonly string ANSWER_GET_SMS = "answer-get-sms";
-           public static readonly string ANSWER_NO_SMS = "answer-no-sms";
+        public struct LogType
+        {
+            public static readonly string CALL_START = "call-start";
+            public static readonly string CALL_END = "call-end";
+            public static readonly string ANSWER_GET_SMS = "answer-get-sms";
+            public static readonly string ANSWER_NO_SMS = "answer-no-sms";
 
-           public string Value { get; set; }
+            public string Value { get; set; }
 
-            public LogType(String value) {
+            public LogType(String value)
+            {
                 this.Value = value;
             }
         };
 
         private HttpClient httpClient;
-       
+
         private Application app { get; set; }
         private string caller { get; set; }
         private string called { get; set; }
 
-        public IVR(Application app, string caller, string called) {
+        public IVR(Application app, string caller, string called)
+        {
 
             httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(Properties.Resources.BASE_URL);
@@ -48,13 +51,15 @@ namespace DialOnce
         }
 
 
-        public void Init() {
-
+        public IVR Init()
+        {
             if (this.app.Token == null || String.IsNullOrEmpty(this.app.Token.Token))
             {
                 this.app.Token = GetTokenDescriptor(app.ClientId, app.ClientSecret);
                 this.httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(this.app.Token.Scheme, this.app.Token.Token);
             }
+
+            return this;
         }
 
 
@@ -79,14 +84,15 @@ namespace DialOnce
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
             response.EnsureSuccessStatusCode();
             string result = response.Content.ReadAsStringAsync().Result;
-            TokenResult tokenResult = JsonConvert.DeserializeObject<TokenResult>(result);
-            return new TokenDescriptor(tokenResult.access_token, tokenResult.token_type, tokenResult.expire_at);
+            dynamic tokenResult = JsonConvert.DeserializeObject(result);
+            DateTime expireAt = Convert.ToDateTime(tokenResult.expire_at);
+            return new TokenDescriptor(Convert.ToString(tokenResult.access_token), Convert.ToString(tokenResult.token_type), expireAt);
 
         }
 
 
-        public bool Log(LogType logType) {
-
+        public bool Log(LogType logType)
+        {
             var postData = new List<KeyValuePair<string, string>>(3);
             postData.Add(new KeyValuePair<string, string>("type", logType.Value));
             postData.Add(new KeyValuePair<string, string>("called", this.called));
@@ -95,12 +101,9 @@ namespace DialOnce
             HttpContent content = new FormUrlEncodedContent(postData);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
 
-
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, Properties.Resources.LOG_ENDPOINT);
             request.Content = content;
             request.Headers.Authorization = new AuthenticationHeaderValue(this.app.Token.Scheme, this.app.Token.Token);
-
-
 
             HttpResponseMessage response = this.httpClient.SendAsync(request).Result;
             response.EnsureSuccessStatusCode();
@@ -109,19 +112,17 @@ namespace DialOnce
             return resultObj.success;
         }
 
-        public bool isMobile(string cultureISO)
+        public bool IsMobile(string cultureISO = "")
         {
             UriBuilder builder = new UriBuilder(Properties.Resources.BASE_URL);
             builder.Path = Properties.Resources.IS_MOBILE_ENDPOINT;
 
             string url = builder.Uri.ToString() + @"?number=" + this.caller;
 
-
             if (!String.IsNullOrEmpty(cultureISO))
             {
-              url += @"&cultureISO=" + cultureISO;
+                url += @"&cultureISO=" + cultureISO;
             }
-            
 
             HttpResponseMessage response = this.httpClient.GetAsync(url).Result;
             response.EnsureSuccessStatusCode();
@@ -130,13 +131,12 @@ namespace DialOnce
             return resultObj.mobile;
         }
 
-        public bool isEligible()
+        public bool IsEligible()
         {
             UriBuilder builder = new UriBuilder(Properties.Resources.BASE_URL);
             builder.Path = Properties.Resources.IS_ELEGIBLE_ENDPOINT;
 
             string url = builder.Uri.ToString() + @"?caller=" + this.caller.Trim() + @"&called=" + this.caller.Trim();
-
 
             HttpResponseMessage response = this.httpClient.GetAsync(url).Result;
             response.EnsureSuccessStatusCode();
