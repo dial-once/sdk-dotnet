@@ -144,6 +144,28 @@ namespace DialOnce
             dynamic resultObj = JsonConvert.DeserializeObject(result);
             return resultObj.eligible;
         }
+
+
+        public bool ServiceRequest()
+        {
+            var postData = new List<KeyValuePair<string, string>>(3);
+            postData.Add(new KeyValuePair<string, string>("called", this.called));
+            postData.Add(new KeyValuePair<string, string>("caller", this.caller));
+
+            HttpContent content = new FormUrlEncodedContent(postData);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, Properties.Resources.SERVICE_REQUEST_ENDPOINT);
+            request.Content = content;
+            request.Headers.Authorization = new AuthenticationHeaderValue(this.app.Token.Scheme, this.app.Token.Token);
+
+            HttpResponseMessage response = this.httpClient.SendAsync(request).Result;
+            response.EnsureSuccessStatusCode();
+            string result = response.Content.ReadAsStringAsync().Result;
+            dynamic resultObj = JsonConvert.DeserializeObject(result);
+            return resultObj.success;
+        }
     }
 
 }

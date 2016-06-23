@@ -61,6 +61,23 @@ namespace DialOnce.Tests
         }
 
         [TestMethod()]
+        public void GetTokenAndServiceRequestWithApplication()
+        {
+            string called = "+33643487995";
+            string caller = "+33643487995";
+
+            Application app = new Application("qpvao53b1x10z7u3906wvgzmvexuxwxj", "56g5jvhlciv9e0l4izccjqkf54okh21jbn4d4yj7");
+            IVR ivrFlow = new IVR(app, caller, called);
+
+            ivrFlow.Init();
+            ValidateToken(app.Token);
+
+            bool result = ivrFlow.ServiceRequest();
+            Assert.IsTrue(result);
+
+        }
+
+        [TestMethod()]
         public void GetTokenWithInvalidArguments()
         {
 
