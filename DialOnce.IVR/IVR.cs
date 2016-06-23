@@ -111,9 +111,6 @@ namespace DialOnce
 
         public bool isMobile(string cultureISO)
         {
-            
-            
-
             UriBuilder builder = new UriBuilder(Properties.Resources.BASE_URL);
             builder.Path = Properties.Resources.IS_MOBILE_ENDPOINT;
 
@@ -131,6 +128,21 @@ namespace DialOnce
             string result = response.Content.ReadAsStringAsync().Result;
             dynamic resultObj = JsonConvert.DeserializeObject(result);
             return resultObj.mobile;
+        }
+
+        public bool isEligible()
+        {
+            UriBuilder builder = new UriBuilder(Properties.Resources.BASE_URL);
+            builder.Path = Properties.Resources.IS_ELEGIBLE_ENDPOINT;
+
+            string url = builder.Uri.ToString() + @"?caller=" + this.caller.Trim() + @"&called=" + this.caller.Trim();
+
+
+            HttpResponseMessage response = this.httpClient.GetAsync(url).Result;
+            response.EnsureSuccessStatusCode();
+            string result = response.Content.ReadAsStringAsync().Result;
+            dynamic resultObj = JsonConvert.DeserializeObject(result);
+            return resultObj.eligible;
         }
     }
 
