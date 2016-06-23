@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LOG_URL" xml:space="preserve">
-    <value>http://api.dialonce.io/ivrlogs</value>
+  <data name="BASE_URL" xml:space="preserve">
+    <value>http://api.dialonce.io/</value>
   </data>
-  <data name="TOKEN_URL" xml:space="preserve">
-    <value>http://api.dialonce.io/oauth/token?grant_type=client_credentials</value>
+  <data name="IS_ELEGIBLE_ENDPOINT" xml:space="preserve">
+    <value>/ivr/isEligible</value>
+  </data>
+  <data name="IS_MOBILE_ENDPOINT" xml:space="preserve">
+    <value>/phoneNumbers/isMobile</value>
+  </data>
+  <data name="LOG_ENDPOINT" xml:space="preserve">
+    <value>/ivrlogs</value>
+  </data>
+  <data name="SERVICE_REQUEST_ENDPOINT" xml:space="preserve">
+    <value>/ivr/serviceRequest</value>
+  </data>
+  <data name="TOKEN_ENDPOINT" xml:space="preserve">
+    <value>/oauth/token?grant_type=client_credentials</value>
     <comment>Dial Once Token Url</comment>
   </data>
 </root>

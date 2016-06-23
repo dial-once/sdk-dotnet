@@ -1,22 +1,112 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace DialOnce
 {
-    class IVR
+    public class IVR
     {
+        public struct LogType  {
+           public static readonly string CALL_START = "call-start";
+           public static readonly string CALL_END = "call-end";
+           public static readonly string ANSWER_GET_SMS = "answer-get-sms";
+           public static readonly string ANSWER_NO_SMS = "answer-no-sms";
+
+           public string Value { get; set; }
+
+            public LogType(String value) {
+                this.Value = value;
+            }
+        };
+
+        private HttpClient httpClient;
+       
         private Application app { get; set; }
         private string caller { get; set; }
         private string called { get; set; }
 
         public IVR(Application app, string caller, string called) {
+
+            httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(Properties.Resources.BASE_URL);
+
             this.app = app;
             this.caller = caller;
             this.called = called;
+        }
+
+        public IVR(Application app)
+        {
+            httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(Properties.Resources.BASE_URL);
+            this.app = app;
+        }
+
+
+        public void Init() {
+
+            if (this.app.Token == null || String.IsNullOrEmpty(this.app.Token.Token))
+            {
+                this.app.Token = GetTokenDescriptor(app.ClientId, app.ClientSecret);
+            }
+        }
+
+
+        private TokenDescriptor GetTokenDescriptor(string clientId, string clientSecret)
+        {
+            if (String.IsNullOrEmpty(clientId)) throw new Exception("clientId must not be null or empty");
+            if (String.IsNullOrEmpty(clientSecret)) throw new Exception("clientSecret must not be null or empty");
+
+
+            var postData = new List<KeyValuePair<string, string>>();
+            postData.Add(new KeyValuePair<string, string>("client_id", clientId));
+            postData.Add(new KeyValuePair<string, string>("client_secret", clientSecret));
+
+            HttpContent content = new FormUrlEncodedContent(postData);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+
+
+            var request = new HttpRequestMessage(HttpMethod.Post, Properties.Resources.TOKEN_ENDPOINT);
+            request.Content = content;
+
+
+            HttpResponseMessage response = httpClient.SendAsync(request).Result;
+            response.EnsureSuccessStatusCode();
+            string result = response.Content.ReadAsStringAsync().Result;
+            TokenResult tokenResult = JsonConvert.DeserializeObject<TokenResult>(result);
+            return new TokenDescriptor(tokenResult.access_token, tokenResult.token_type, tokenResult.expire_at);
 
         }
+
+
+        public bool Log(LogType logType) {
+
+            var postData = new List<KeyValuePair<string, string>>(3);
+            postData.Add(new KeyValuePair<string, string>("type", logType.Value));
+            postData.Add(new KeyValuePair<string, string>("called", this.called));
+            postData.Add(new KeyValuePair<string, string>("caller", this.caller));
+
+            HttpContent content = new FormUrlEncodedContent(postData);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, Properties.Resources.LOG_ENDPOINT);
+            request.Content = content;
+            request.Headers.Authorization = new AuthenticationHeaderValue(this.app.Token.Scheme, this.app.Token.Token);
+
+
+
+            HttpResponseMessage response = this.httpClient.SendAsync(request).Result;
+            response.EnsureSuccessStatusCode();
+            string result = response.Content.ReadAsStringAsync().Result;
+            dynamic resultObj = JsonConvert.DeserializeObject(result);
+            return resultObj.success;
+        }
     }
+
 }

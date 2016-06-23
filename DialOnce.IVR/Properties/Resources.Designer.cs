@@ -61,20 +61,56 @@ namespace DialOnce.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://api.dialonce.io/ivrlogs.
+        ///   Looks up a localized string similar to http://api.dialonce.io/.
         /// </summary>
-        internal static string LOG_URL {
+        internal static string BASE_URL {
             get {
-                return ResourceManager.GetString("LOG_URL", resourceCulture);
+                return ResourceManager.GetString("BASE_URL", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://api.dialonce.io/oauth/token?grant_type=client_credentials.
+        ///   Looks up a localized string similar to /ivr/isEligible.
         /// </summary>
-        internal static string TOKEN_URL {
+        internal static string IS_ELEGIBLE_ENDPOINT {
             get {
-                return ResourceManager.GetString("TOKEN_URL", resourceCulture);
+                return ResourceManager.GetString("IS_ELEGIBLE_ENDPOINT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /phoneNumbers/isMobile.
+        /// </summary>
+        internal static string IS_MOBILE_ENDPOINT {
+            get {
+                return ResourceManager.GetString("IS_MOBILE_ENDPOINT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /ivrlogs.
+        /// </summary>
+        internal static string LOG_ENDPOINT {
+            get {
+                return ResourceManager.GetString("LOG_ENDPOINT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /ivr/serviceRequest.
+        /// </summary>
+        internal static string SERVICE_REQUEST_ENDPOINT {
+            get {
+                return ResourceManager.GetString("SERVICE_REQUEST_ENDPOINT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /oauth/token?grant_type=client_credentials.
+        /// </summary>
+        internal static string TOKEN_ENDPOINT {
+            get {
+                return ResourceManager.GetString("TOKEN_ENDPOINT", resourceCulture);
             }
         }
     }
