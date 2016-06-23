@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DialOnce.IVR")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Dial-Once")]
 [assembly: AssemblyProduct("DialOnce.IVR")]
 [assembly: AssemblyCopyright("Copyright Dial-Once ©  2016")]
 [assembly: AssemblyTrademark("")]

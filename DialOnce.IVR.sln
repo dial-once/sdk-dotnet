@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialOnce.IVR", "DialOnce.IVR\DialOnce.IVR.csproj", "{EEDCD37A-F9FF-4E0F-A46C-E62B620334A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialOnce", "DialOnce.IVR\DialOnce.csproj", "{EEDCD37A-F9FF-4E0F-A46C-E62B620334A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialOnce.IVRTests", "DialOnce.IVRTests\DialOnce.IVRTests.csproj", "{12C8ED0B-7730-42F9-9024-7F5A665772CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialOnce.Tests", "DialOnce.IVRTests\DialOnce.Tests.csproj", "{12C8ED0B-7730-42F9-9024-7F5A665772CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

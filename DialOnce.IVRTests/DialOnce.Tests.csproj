@@ -6,7 +6,7 @@
     <ProjectGuid>{12C8ED0B-7730-42F9-9024-7F5A665772CC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DialOnce.IVRTests</RootNamespace>
+    <RootNamespace>DialOnce.Tests</RootNamespace>
     <AssemblyName>DialOnce.IVRTests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -59,9 +59,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DialOnce.IVR\DialOnce.IVR.csproj">
+    <ProjectReference Include="..\DialOnce.IVR\DialOnce.csproj">
       <Project>{EEDCD37A-F9FF-4E0F-A46C-E62B620334A5}</Project>
-      <Name>DialOnce.IVR</Name>
+      <Name>DialOnce</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

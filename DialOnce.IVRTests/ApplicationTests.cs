@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace DialOnce.IVR.Tests
+namespace DialOnce.Tests
 {
     [TestClass()]
     public class ApplicationTests

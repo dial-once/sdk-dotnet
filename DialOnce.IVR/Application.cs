@@ -6,7 +6,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
-namespace DialOnce.IVR
+namespace DialOnce
 {
     public class Application
     {
