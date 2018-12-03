@@ -5,7 +5,7 @@ jobs:
       - image: microsoft/dotnet:2.1.300-preview2-sdk-alpine
     steps:
       - checkout
-      - run: find .
-      - run: dotnet restore
+      - run: dotnet new console
+      - run: dotnet add package mdoc --version 5.3.5.2
       - run: dotnet build
       - run: dotnet test --no-build DialOnce.IVRTests
